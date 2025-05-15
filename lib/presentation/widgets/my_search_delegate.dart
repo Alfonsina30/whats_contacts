@@ -17,7 +17,7 @@ class MySearchDelegate extends SearchDelegate {
           onPressed: () {
             query = '';
           },
-          icon: Icon(Icons.clear))
+          icon: Icon(Icons.clear, color: Theme.of(context).iconTheme.color))
     ];
   }
 
@@ -28,7 +28,10 @@ class MySearchDelegate extends SearchDelegate {
         onPressed: () {
           Navigator.of(context).pop();
         },
-        icon: Icon(Icons.arrow_back));
+        icon: Icon(
+          Icons.arrow_back,
+          color: Theme.of(context).iconTheme.color,
+        ));
   }
 
   @override
@@ -75,12 +78,15 @@ class MySearchDelegate extends SearchDelegate {
                         child: Icon(Icons.person),
                       ),
                       title: Text(contact.name),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (contact.phone.isNotEmpty) Text(contact.phone)
-                        ],
-                      ),
+                      subtitle: (contact.phone.isNotEmpty)
+                          ? Row(
+                              children: [
+                                Icon(Icons.phone, size: 14),
+                                SizedBox(width: 10),
+                                Text(contact.phone),
+                              ],
+                            )
+                          : null,
                       trailing: IconButton(
                           onPressed: () {
                             context
@@ -91,7 +97,7 @@ class MySearchDelegate extends SearchDelegate {
                                   (item) => item.name.contains(contact.name)))
                               ? Icon(
                                   Icons.check_box,
-                                  color: Theme.of(context).primaryColor,
+                                  color: Theme.of(context).iconTheme.color,
                                 )
                               : Icon(Icons.check_box_outline_blank)),
                       onTap: () {

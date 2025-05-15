@@ -28,7 +28,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.deepOrange,
+        iconTheme: IconThemeData(color: Colors.deepOrange.shade400),
+      ),
       home: ContactsPage(),
     );
   }
@@ -77,7 +81,11 @@ class _ContactsPageState extends State<ContactsPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Whats Contacts"),
+        title: const Text(
+          "Whats Contacts",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.deepOrange.shade400,
         actions: [
           IconButton(
               onPressed: () async {
@@ -89,60 +97,88 @@ class _ContactsPageState extends State<ContactsPage>
                   );
                 }
               },
-              icon: Icon(Icons.search_rounded))
+              icon: Icon(
+                Icons.perm_contact_calendar_rounded,
+                color: Colors.white,
+              ))
         ],
       ),
-      body: Center(
-          child: Column(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           CheckboxListTile(
-              title: Text('Permission contact granted'),
+              title: Text(
+                'Permission contact granted',
+                style: TextStyle(color: Colors.grey.shade800),
+              ),
               value: contactsPermission.isPermisionGranted,
+              activeColor: Colors.deepOrange.shade400,
               onChanged: (_) async {
                 await context
                     .read<ContactPermissionBloc>()
                     .requestContactPermission();
               }),
-          SizedBox(height: 20),
-          if (contactsPermission.isPermisionGranted)
-            Container(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.sizeOf(context).height * 0.60,
+          Spacer(),
+          if (contactsPermission.isPermisionGranted &&
+              contactSelected.isNotEmpty)
+            Column(
+              children: [
+                Text(
+                  'Contact selected',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                 ),
-                child: ListView.builder(
-                    itemCount: contactSelected.length,
-                    itemBuilder: (context, index) {
-                      final contact = contactSelected[index];
+                SizedBox(height: 20),
+                Container(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.sizeOf(context).height * 0.60,
+                    ),
+                    child: ListView.builder(
+                        itemCount: contactSelected.length,
+                        itemBuilder: (context, index) {
+                          final contact = contactSelected[index];
 
-                      return Column(children: [
-                        ListTile(
-                          leading: CircleAvatar(
-                            radius: 20,
-                            child: Icon(Icons.person),
-                          ),
-                          title: Text(contact.name),
-                          subtitle: (contact.phone.isNotEmpty)
-                              ? Text(contact.phone)
-                              : null,
-                          trailing: (contactSelected.any(
-                                  (item) => item.name.contains(contact.name)))
-                              ? Icon(
-                                  Icons.check_box,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              : Icon(Icons.check_box_outline_blank),
-                          onTap: () {
-                            context
-                                .read<ContactSelectedBloc>()
-                                .handleContactSelected(contact);
-                          },
-                        ),
-                        const Divider()
-                      ]);
-                    })),
+                          return Column(children: [
+                            ListTile(
+                              leading: CircleAvatar(
+                                radius: 20,
+                                child: Icon(Icons.person),
+                              ),
+                              title: Text(contact.name),
+                              subtitle: (contact.phone.isNotEmpty)
+                                  ? Row(
+                                      children: [
+                                        Icon(Icons.phone, size: 14),
+                                        SizedBox(width: 10),
+                                        Text(contact.phone),
+                                      ],
+                                    )
+                                  : null,
+                              trailing: IconButton(
+                                onPressed: () {
+                                  context
+                                      .read<ContactSelectedBloc>()
+                                      .deleteContactSelected(contact);
+                                },
+                                icon: Icon(
+                                  Icons.cancel,
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
+                              ),
+                            ),
+                            const Divider()
+                          ]);
+                        })),
+              ],
+            )
+          else
+            Text(
+              'Dont have contacts selected',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            ),
+          Spacer(),
         ],
-      )),
+      ),
     );
   }
 }

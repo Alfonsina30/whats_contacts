@@ -1,12 +1,15 @@
 part of 'contact_selected_bloc.dart';
 
-
-sealed class ContactSelectedEvent {
+sealed class HandleContactSelectedEvent {
   final ContactSelectedState newState;
 
-  ContactSelectedEvent({required this.newState});
+  HandleContactSelectedEvent({required this.newState});
 }
 
-class ContactSelected extends ContactSelectedEvent {
-  ContactSelected({required super.newState});
+class ContactSelectedEvent extends HandleContactSelectedEvent {
+  ContactSelectedEvent({required super.newState});
+}
+
+class DeleteContactSelectedEvent extends HandleContactSelectedEvent {
+  DeleteContactSelectedEvent({required super.newState});
 }
