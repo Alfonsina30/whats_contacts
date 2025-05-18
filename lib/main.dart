@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:upgrader/upgrader.dart';
 import 'package:whats_contacts/presentation/bloc/contact_selected/contact_selected_bloc.dart';
 
 import 'presentation/bloc/contact_permission/contact_permission_bloc.dart';
 import 'domain/native/meth_channel.dart';
 import 'presentation/widgets/my_search_delegate.dart';
 
+//TODO: CREAR ARCHIVOS DE BARRIL
+//TODO: ADDED NATIVE CODE FOR REQUEST PERMISSION
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
@@ -33,7 +39,21 @@ class HomePage extends StatelessWidget {
         colorSchemeSeed: Colors.deepOrange,
         iconTheme: IconThemeData(color: Colors.deepOrange.shade400),
       ),
-      home: ContactsPage(),
+      home: UpgradeAlert(
+          showIgnore: false,
+          showLater: false,
+          upgrader: Upgrader(
+            debugDisplayAlways: true,
+            minAppVersion: "0.2.0",
+            debugLogging: true,
+            messages: UpgraderMessages(code: "La versione minima"),
+            /*
+              storeController: UpgraderStoreController(
+                onAndroid: () => UpgraderAppStore(),
+              )
+              */
+          ),
+          child: ContactsPage()),
     );
   }
 }
