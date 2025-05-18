@@ -1,4 +1,4 @@
-package com.example.whats_contacts;
+package com.alfonsinabeltre.myapp.whatsContacts;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;

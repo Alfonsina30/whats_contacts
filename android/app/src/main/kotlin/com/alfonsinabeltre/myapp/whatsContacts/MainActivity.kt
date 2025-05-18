@@ -1,4 +1,4 @@
-package com.example.whats_contacts
+package com.alfonsinabeltre.myapp.whatsContacts
 
 import io.flutter.embedding.android.FlutterActivity
 
