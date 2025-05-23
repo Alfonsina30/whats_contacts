@@ -43,3 +43,12 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    def activity_version = "1.2.0"
+    def fragment_version = "1.8.7"
+
+    implementation("androidx.activity:activity-ktx:$activity_version")
+    implementation("androidx.fragment:fragment-ktx:$fragment_version")
+
+}

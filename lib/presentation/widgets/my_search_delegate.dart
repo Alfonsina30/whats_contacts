@@ -44,6 +44,7 @@ class MySearchDelegate extends SearchDelegate {
     return _customWidget(context);
   }
 
+//TODO: REVISAR PORQUE CUANDO SE HACE LA BUSQUEDA NO APARECEN LOS CONTACTOS IGUALES A LA BUSQUEDA
   Widget _customWidget(BuildContext context) {
     return BlocBuilder<ContactSelectedBloc, ContactSelectedState>(
         builder: (context, state) {

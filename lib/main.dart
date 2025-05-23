@@ -43,10 +43,12 @@ class HomePage extends StatelessWidget {
           showIgnore: false,
           showLater: false,
           upgrader: Upgrader(
-            debugDisplayAlways: true,
+           // debugDisplayAlways: true,
             minAppVersion: "0.2.0",
-            debugLogging: true,
-            messages: UpgraderMessages(code: "La versione minima"),
+            //debugLogging: true,
+
+            // messages: MySpanishMessages()
+            messages: UpgraderMessages(code: "es"),
             /*
               storeController: UpgraderStoreController(
                 onAndroid: () => UpgraderAppStore(),
@@ -55,6 +57,33 @@ class HomePage extends StatelessWidget {
           ),
           child: ContactsPage()),
     );
+  }
+}
+///--- Esta clase ayuda a cambiar el texto que se muestra en el showdialog
+class MySpanishMessages extends UpgraderMessages {
+  /// Override the message function to provide custom language localization.
+  @override
+  String? message(UpgraderMessage messageKey) {
+    if (languageCode == 'es') {
+      switch (messageKey) {
+        case UpgraderMessage.body:
+          return 'Una version de {{appName}} esta disponible!';
+        case UpgraderMessage.buttonTitleIgnore:
+          return 'es Ignore';
+        case UpgraderMessage.buttonTitleLater:
+          return 'es Later';
+        case UpgraderMessage.buttonTitleUpdate:
+          return 'es Update Now';
+        case UpgraderMessage.prompt:
+          return 'es Want to update?';
+        case UpgraderMessage.releaseNotes:
+          return 'es Release Notes';
+        case UpgraderMessage.title:
+          return 'Actualizar el app?';
+      }
+    }
+    // Messages that are not provided above can still use the default values.
+    return super.message(messageKey);
   }
 }
 
@@ -74,7 +103,7 @@ class _ContactsPageState extends State<ContactsPage>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    context.read<ContactPermissionBloc>().checkPermission();
+ context.read<ContactPermissionBloc>().checkPermission();
   }
 
   @override
@@ -88,7 +117,7 @@ class _ContactsPageState extends State<ContactsPage>
     super.didChangeAppLifecycleState(state);
 
     if (state == AppLifecycleState.resumed) {
-      context.read<ContactPermissionBloc>().checkPermission();
+ context.read<ContactPermissionBloc>().checkPermission();
     }
   }
 

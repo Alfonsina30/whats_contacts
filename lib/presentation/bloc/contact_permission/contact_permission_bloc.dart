@@ -1,16 +1,20 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whats_contacts/domain/native/meth_channel.dart';
-import 'package:permission_handler/permission_handler.dart';
+
 import 'package:equatable/equatable.dart';
 
 import 'package:whats_contacts/domain/model/contact_model.dart';
 part 'contact_permission_event.dart';
 part 'contact_permission_state.dart';
 
+enum PermissionStatus { granted, denied }
+
 class ContactPermissionBloc
     extends Bloc<ContactPermissionEvent, ContactPermissionState> {
+  ///
   final ConnectionWithMethChannel connectionWithMethChannel;
 
   ContactPermissionBloc({required this.connectionWithMethChannel})
@@ -23,25 +27,36 @@ class ContactPermissionBloc
   }
 
   Future<void> checkPermission() async {
-    final status = await Permission.contacts.status;
+    final status = await connectionWithMethChannel.checkPermission()
+        ? PermissionStatus.granted
+        : PermissionStatus.denied;
+    //
     add(CheckPermissionEvent(statusPermission: status));
+
     if (status == PermissionStatus.granted) {
       await _getContactsList();
     }
   }
 
   Future<List<ContactModel>> requestContactPermission() async {
-    final status = await Permission.contacts.request();
+    final contacts = await _getContactsList();
 
-    if (status == PermissionStatus.permanentlyDenied) {
-      openAppSettings();
-    }
+    ///
+    final status = await connectionWithMethChannel.checkPermission()
+        ? PermissionStatus.granted
+        : PermissionStatus.denied;
+
+    add(CheckPermissionEvent(statusPermission: status));
+
+    ///
+    return contacts;
+
+/*
     if (status == PermissionStatus.granted) {
-      add(CheckPermissionEvent(statusPermission: status));
-      return await _getContactsList();
+      
     }
-
-    return [];
+*/
+    //   return [];
   }
 
   Future<List<ContactModel>> _getContactsList() async {
@@ -51,6 +66,9 @@ class ContactPermissionBloc
       //
       return contacts;
     } catch (e) {
+  ///
+      log('CATCH CONTACT LIST $e');
+
       throw Exception(['An unknown exception ocurred']);
     }
   }

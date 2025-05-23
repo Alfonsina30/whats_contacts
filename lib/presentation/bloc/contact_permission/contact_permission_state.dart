@@ -1,3 +1,4 @@
+
 part of 'contact_permission_bloc.dart';
 
 class ContactPermissionState extends Equatable {
