@@ -1,9 +1,8 @@
-
 part of 'contact_permission_bloc.dart';
 
 class ContactPermissionState extends Equatable {
   final PermissionStatus statusPermission;
-  final List<ContactModel> contacts;
+  final List<Contact> contacts;
 
   const ContactPermissionState(
       {required this.statusPermission, required this.contacts});
@@ -12,7 +11,7 @@ class ContactPermissionState extends Equatable {
 
   ContactPermissionState copyWith({
     PermissionStatus? statusPermission,
-    List<ContactModel>? contacts,
+    List<Contact>? contacts,
   }) {
     return ContactPermissionState(
         statusPermission: statusPermission ?? this.statusPermission,

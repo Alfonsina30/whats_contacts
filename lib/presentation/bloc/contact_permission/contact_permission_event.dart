@@ -1,6 +1,6 @@
 part of 'contact_permission_bloc.dart';
 
-class ContactPermissionEvent {}
+sealed class ContactPermissionEvent {}
 
 class CheckPermissionEvent extends ContactPermissionEvent {
   final PermissionStatus statusPermission;
@@ -8,6 +8,6 @@ class CheckPermissionEvent extends ContactPermissionEvent {
 }
 
 class GetContactsEvent extends ContactPermissionEvent {
-  final List<ContactModel> contacts;
+  final List<Contact> contacts;
   GetContactsEvent({required this.contacts});
 }

@@ -1,8 +1,8 @@
-class ContactModel {
+class Contact {
   final String name;
   final String phone;
 
-  ContactModel({this.name = '', required this.phone});
+  Contact({this.name = '', required this.phone});
 
   @override
   String toString() {

@@ -1,8 +1,8 @@
 part of 'contact_selected_bloc.dart';
 
 sealed class HandleContactSelectedEvent {
+  //
   final ContactSelectedState newState;
-
   HandleContactSelectedEvent({required this.newState});
 }
 

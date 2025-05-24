@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whats_contacts/domain/model/contact_model.dart';
-import 'package:whats_contacts/presentation/bloc/contact_permission/contact_permission_bloc.dart';
-import 'package:whats_contacts/presentation/bloc/contact_selected/contact_selected_bloc.dart';
+import 'package:whats_contacts/domain/entities/contact.dart';
+
+import '../presentation_files.dart';
 
 class MySearchDelegate extends SearchDelegate {
-  final List<ContactModel> contacts;
+  final List<Contact> contacts;
 
   MySearchDelegate({required this.contacts});
 
@@ -44,8 +44,8 @@ class MySearchDelegate extends SearchDelegate {
     return _customWidget(context);
   }
 
-//TODO: REVISAR PORQUE CUANDO SE HACE LA BUSQUEDA NO APARECEN LOS CONTACTOS IGUALES A LA BUSQUEDA
   Widget _customWidget(BuildContext context) {
+    //---
     return BlocBuilder<ContactSelectedBloc, ContactSelectedState>(
         builder: (context, state) {
       return FutureBuilder(
@@ -56,58 +56,59 @@ class MySearchDelegate extends SearchDelegate {
               return const Center(
                 child: SizedBox(height: 50, child: CircularProgressIndicator()),
               );
-            }
+            } else {
+              //---
 
-            final searchResult = query.isEmpty
-                ? snapshot.data ?? <ContactModel>[]
-                : snapshot.data ??
-                    []
-                        .where((contact) => contact.name
-                            .toLowerCase()
-                            .contains(query.toLowerCase()))
-                        .toList();
+              final searchResult = query.isEmpty
+                  ? snapshot.data ?? <Contact>[]
+                  : snapshot.data!
+                      .where((contact) => contact.name
+                          .toLowerCase()
+                          .contains(query.toLowerCase()))
+                      .toList();
 
-            return ListView.builder(
-                itemCount: searchResult.length,
-                itemBuilder: (context, index) {
-                  final ContactModel contact = searchResult[index];
+              return ListView.builder(
+                  itemCount: searchResult.length,
+                  itemBuilder: (context, index) {
+                    final Contact contact = searchResult[index];
 
-                  return Column(children: [
-                    ListTile(
-                      leading: const CircleAvatar(
-                        radius: 20,
-                        child: Icon(Icons.person),
+                    return Column(children: [
+                      ListTile(
+                        leading: const CircleAvatar(
+                          radius: 20,
+                          child: Icon(Icons.person),
+                        ),
+                        title: Text(contact.name),
+                        subtitle: (contact.phone.isNotEmpty)
+                            ? Row(
+                                children: [
+                                  Icon(Icons.phone, size: 14),
+                                  SizedBox(width: 10),
+                                  Text(contact.phone),
+                                ],
+                              )
+                            : null,
+                        trailing: IconButton(
+                            onPressed: () {
+                              context
+                                  .read<ContactSelectedBloc>()
+                                  .handleContactSelected(contact);
+                            },
+                            icon: (state.contactSelected.any(
+                                    (item) => item.name.contains(contact.name)))
+                                ? Icon(
+                                    Icons.check_box,
+                                    color: Theme.of(context).iconTheme.color,
+                                  )
+                                : Icon(Icons.check_box_outline_blank)),
+                        onTap: () {
+                          query = contact.name;
+                        },
                       ),
-                      title: Text(contact.name),
-                      subtitle: (contact.phone.isNotEmpty)
-                          ? Row(
-                              children: [
-                                Icon(Icons.phone, size: 14),
-                                SizedBox(width: 10),
-                                Text(contact.phone),
-                              ],
-                            )
-                          : null,
-                      trailing: IconButton(
-                          onPressed: () {
-                            context
-                                .read<ContactSelectedBloc>()
-                                .handleContactSelected(contact);
-                          },
-                          icon: (state.contactSelected.any(
-                                  (item) => item.name.contains(contact.name)))
-                              ? Icon(
-                                  Icons.check_box,
-                                  color: Theme.of(context).iconTheme.color,
-                                )
-                              : Icon(Icons.check_box_outline_blank)),
-                      onTap: () {
-                        query = contact.name;
-                      },
-                    ),
-                    const Divider()
-                  ]);
-                });
+                      const Divider()
+                    ]);
+                  });
+            }
           });
     });
   }
