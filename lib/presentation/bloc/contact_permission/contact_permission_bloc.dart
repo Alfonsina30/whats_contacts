@@ -10,7 +10,9 @@ import 'package:whats_contacts/domain/model/contact_model.dart';
 part 'contact_permission_event.dart';
 part 'contact_permission_state.dart';
 
-enum PermissionStatus { granted, denied }
+enum PermissionStatus {granted, denied }
+
+
 
 class ContactPermissionBloc
     extends Bloc<ContactPermissionEvent, ContactPermissionState> {
@@ -20,6 +22,7 @@ class ContactPermissionBloc
   ContactPermissionBloc({required this.connectionWithMethChannel})
       : super(ContactPermissionState(
             contacts: [], statusPermission: PermissionStatus.denied)) {
+              ///
     on<CheckPermissionEvent>((event, emit) =>
         emit(state.copyWith(statusPermission: event.statusPermission)));
     on<GetContactsEvent>(

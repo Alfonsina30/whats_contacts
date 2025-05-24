@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  upgrader: ^11.3.2
   flutter_bloc: ^9.1.0
   equatable: ^2.0.7
 
