@@ -13,10 +13,12 @@ import android.provider.ContactsContract;
 import android.provider.Settings;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
@@ -31,17 +33,21 @@ import io.flutter.plugin.common.MethodChannel;
 
 public class MainActivity extends FlutterFragmentActivity {
 
+    String permission = Manifest.permission.READ_CONTACTS;
+
     @SuppressLint("Range")
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
+
+
+
 
         BinaryMessenger binaryMessenger = flutterEngine.getDartExecutor().getBinaryMessenger();
         MethodChannel methodChannel = new MethodChannel(binaryMessenger, "app/whatscontacts");
 
         // inicializacion del canal entre flutter y android
         methodChannel.setMethodCallHandler((call, result) -> {
-            String permission = Manifest.permission.READ_CONTACTS;
 
             if (call.method.equals("getContacts")) {
 
@@ -88,30 +94,50 @@ public class MainActivity extends FlutterFragmentActivity {
                 }
 
                 // -- **************** PERMISSION IS DENIED PERMANENTLY
-                else {
-                    Boolean showDialogPermission = ActivityCompat.shouldShowRequestPermissionRationale(this,
-                            permission);
-
-                    if (!showDialogPermission) {
-                        // --- permission is denied permanently and user mark don't ask again
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", getPackageName(), null);
-                        intent.setData(uri);
-
-                        // --- es necesario cuando llamo startActivity y es para decirle al sistema
-                        // quiero lanzar esta nueva pantalla(actividad) como
-                        // nueva tarea en el stack
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-
+                else if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)){
+                    
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[] { permission }, 0);
+                         }
                     }
-                    // -- **************** PERMISSION IS DENIED
-                    else {
+
+                else {
+/*
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[] { permission }, 0);
+                    }
+*/
+
+                    // --- permission is denied permanently and user mark don't ask again
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+
+                    // --- es necesario cuando llamo startActivity y es para decirle al sistema
+                    // quiero lanzar esta nueva pantalla(actividad) como
+                    // nueva tarea en el stack
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
+
+/*
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[] { permission }, 0);
+*/
+                    // permissionLauncher.launch(new String[]{Manifest.permission.READ_CONTACTS});
+
+
+
+                   // result.success(new ArrayList[]{});
+                                        /*
+                        // -- **************** PERMISSION IS DENIED
+
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             requestPermissions(new String[] { permission }, 0);
                         }
-                    }
-                }
+                                */
+ }
+
             }
             // ***** ---------------------------------- METHOD CHECK PERMISSION
             else if (call.method.equals("checkPermission")) {

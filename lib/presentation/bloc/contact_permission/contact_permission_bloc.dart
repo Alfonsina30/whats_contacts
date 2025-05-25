@@ -52,13 +52,6 @@ class ContactPermissionBloc
 
     ///
     return contacts;
-
-/*
-    if (status == PermissionStatus.granted) {
-      
-    }
-*/
-    //   return [];
   }
 
   Future<List<Contact>> _getContactsList() async {
