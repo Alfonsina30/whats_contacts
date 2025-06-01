@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
-
-import 'package:whats_contacts/data/data_files.dart';
+import 'package:whats_contacts/data/models/contact_model.dart';
 import 'package:whats_contacts/domain/entities/contact.dart';
 
 class ConnectionWithMethChannel {

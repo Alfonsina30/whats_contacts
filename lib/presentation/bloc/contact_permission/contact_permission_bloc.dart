@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:equatable/equatable.dart';
 
-import 'package:whats_contacts/data/data_files.dart';
+import 'package:whats_contacts/core/service/platform/meth_channel.dart';
 import 'package:whats_contacts/domain/entities/contact.dart';
 
 part 'contact_permission_event.dart';
