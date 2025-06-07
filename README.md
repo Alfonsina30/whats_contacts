@@ -21,7 +21,8 @@ Para mostrar los contactos en la UI del app y darle la posibilidad al usuario de
 
 # CONSIDERACIONES
  
-- En el android manifest se debe especificar que permiso que va a solicitar al usuario. " <uses-permission android:name="android.permission.READ_CONTACTS"/> "
+- En el android manifest se debe especificar que permiso que va a solicitar al usuario:
+  "android.permission.READ_CONTACTS"
 
 # UI APP
 home_page
