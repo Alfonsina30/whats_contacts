@@ -1,27 +1,22 @@
 # whats_contacts
  
- Aplicación Flutter para tomar los contactos que utilicen whatsapp, lo cuales han sido guardados en el sistema operativo móvil android.
+ Aplicación Flutter que se encarga de acceder a los contactos del dispositivo los cuales tienen la etiqueta de whatsapp.
+ 
+Que utiliza esta app:
 
-- Que utiliza esta app:
+# Platform Channel para la comunicación entre Dart y el código nátivo para:
 
-1. Platform channel para la comunicacion entre Dart y el codigo nátivo utilizanodo Java para:
+- Verificar si el usuario ha otorgado el permiso de "READ_CONTACTS".
+- Hacer la solicitud del permiso mostrando un showDialog.
+- En el caso de que el permiso haya sido completamente denegado, llevar al usuario a la configuración del sistema para otorgar el permiso manualmente.
+- Hacer la query para acceder a los contactos que tengan la etiqueta whatsapp que están guardados en el dispositivo.
 
--Verificar si el usuario ha otorgado el permiso de "READ_CONTACTS". 
+# Bloc como manejador de estado: 
+Para mostrar los contactos en la UI del app y darle la posibilidad al usuario de seleccionar los contactos.
 
--Hacer la solicitud del permiso mostrando un showDialog.
-
--En el caso de que el permiso ha sido completado denegado, llevar al usuario a la configuracion del sistema para otorgar el permiso manualmente.
-
--Hacer la query para acceder a los contactos que tengan la etiqueta whatsapp que estan guardados en el dispositivo.
-
-3. Bloc como manejador de estado: 
--Para mostrar los contactos en la UI del app y darle la posibilidad al usuario de seleccionar los contactos.
-
-4. Widgets:
-
--WidgetsBindingObserver para escuchar los cambios en la aplicación, por ejemplo, cuando el usuario sale del app para otorgar el permiso manualmente en la setting del sistema y luego al regresar a la aplicacion debemos escuchar el cambio de estado del permiso otorgado.
-
--Search Delegate para que el usuario pueda realizar busqueda de contactos dentro de la misma aplicación.
+# Widgets:
+- Widgets Binding Observer para escuchar los cambios en la aplicación, por ejemplo, cuando el usuario sale del app para otorgar el permiso manualmente en la setting del sistema y luego al regresar a la aplicación debemos escuchar el cambio de estado del permiso otorgado.
+- Search Delegate para que el usuario pueda realizar búsqueda de contactos dentro de la misma aplicación.
 
 
 # CONSIDERACIONES
