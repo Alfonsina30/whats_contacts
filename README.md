@@ -30,4 +30,4 @@
 
 # UI APP
 
-     ![device_setting_granted_permissions](device_setting_granted_permissions.jpg)
+     ![device_setting_granted_permissions]
