@@ -28,6 +28,7 @@
  
 - En el android manifest se debe especificar que permiso que va a solicitar al usuario. " <uses-permission android:name="android.permission.READ_CONTACTS"/> "
 
-# UI APP
+# UI APP![search](https://github.com/user-attachments/assets/211adca5-43d2-4639-9f9c-ea20c7248f4a)
 
-     !device_setting_granted_permissions.jpg
+
+ 
